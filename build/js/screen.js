@@ -4,20 +4,18 @@ export default class Screen {
         this.canvas = null;
         this.ctx = null;
         this.config = config;
-        // this.dots = [];
     }
 
     initialize() {
         this.createCanvas();
+        this.updateCanvasSize();
     }
 
     createCanvas() {
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'screen';
         this.ctx = this.canvas.getContext('2d');
-        this.updateCanvasSize();
         document.body.appendChild(this.canvas);
-        // this.updateDots();
     }
 
     updateCanvasSize() {
@@ -27,8 +25,8 @@ export default class Screen {
     }
 
     animate() {
-        // requestAnimationFrame(() => this.animate());
         this.background();
+        //need to add logic for adding elements...
 
     }
 
@@ -37,11 +35,6 @@ export default class Screen {
         this.ctx.fillStyle = this.config.bgColor; // Use configured background color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
-}
 
-    // updateDots() {
-    //     // Update the positions and check for collisions
-    //     this.dots.forEach((dot) => {
-    //         dot.update(this.canvas);
-    //     });
-    // }
+    
+}

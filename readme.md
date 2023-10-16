@@ -16,8 +16,9 @@ The aim is to explore object-oriented programming with the HTML5 canvas element.
    - [VSCodium](#33-VSCodium)
 4. [Hello World](#4-hello-world)
 5. [Time for Some Bubbly](#5-time-for-some-bubbly)
-6. [License](#6-license)
-7. [Acknowledgements](#7-acknowledgements)
+6. [Square Up](#6-square-up)
+6. [License](#7-license)
+7. [Acknowledgements](#8-acknowledgements)
 
 ## 1. Getting Started
 
@@ -59,11 +60,15 @@ Get into the terminal!
 
 Get started with the Canvas!
 
-## 6. License
+## 6. Square Up
+
+pack your shit up!
+
+## 7. License
 
 This project is licensed under the **Creative Commons CC0 1.0 Universal (CC0 1.0) Public Domain Dedication** - see the [LICENSE.md](license.md) file for details.
 
-## 7. Acknowledgements
+## 8. Acknowledgements
 
 - AndyPants
 - The ChatGPT Assistant from OpenAI
