@@ -1,11 +1,12 @@
-export default class Dot {
+export class Dot {
     constructor(x, y, size, color) {
         this.x = x;
         this.y = y;
+        this.z = z;
         this.radius = size;
         this.color = color;
-        this.dx = (Math.random() - 0.5) * 5;
-        this.dy = (Math.random() - 0.5) * 5;
+        this.dx = 0;
+        this.dy = 0;
     }
 
     update(canvas) {

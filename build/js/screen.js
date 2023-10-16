@@ -35,6 +35,14 @@ export default class Screen {
         this.ctx.fillStyle = this.config.bgColor; // Use configured background color
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
+    changeBackgroundColor() {
+        // Generate a random background color when called
+        //TODO: change to allow a specific color input
+        console.log("huh?")
+        const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        this.config.bgColor = randomColor;
+        this.background(); // Update the background with the new color
+    }
 
     
 }
