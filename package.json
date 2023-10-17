@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "dev": "parcel ./build/index.html",
-    "build": "parcel build index.html",
-    "deploy": "rm -rf dist/ && npm build && gh-pages -d dist"
+    "build": "parcel build ./build/index.html",
+    "deploy": "rm -rf dist/ && npm run build && gh-pages -d dist"
   },
   "homepage": "andypants.xyz",
   "author": "AndyPants",

@@ -56,7 +56,7 @@ export default class Screen {
 
 
 
-            this.logFPS();
+            // this.logFPS();
             if (this.isAnimating) {
                 requestAnimationFrame(() => this.animate());
             }
