@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,UACI,QAAS,CACT,SAAU,CACV,eACF,CACA,OACE,aACF","file":"styles.64cc49ee.css","sourceRoot":"../build","sourcesContent":["body, html {\n    margin: 0;\n    padding: 0;\n    overflow: hidden;\n  }\n  canvas {\n    display: block;\n  }  "]}
