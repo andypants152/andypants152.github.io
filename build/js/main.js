@@ -22,6 +22,7 @@ class tooDeeWorld {
     attachEventListeners() {
         window.addEventListener('resize', () => {
             this.screen.updateCanvasSize();
+            this.screen.effect.wrapText('AndyPants!');
         });
 
         //document.addEventListener('keydown', () => { this.changeBackgroundColor() });
