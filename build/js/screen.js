@@ -17,7 +17,6 @@ export default class Screen {
         this.updateCanvasSize();
         this.effect = new Effect(this.ctx, this.canvas.width, this.canvas.height);
         this.effect.wrapText('AndyPants!');
-
         this.animate();
     }
 
@@ -46,15 +45,8 @@ export default class Screen {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.fillStyle = this.color;
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-
-
+            
             this.effect.render();
-
-
-
-
-
 
             // this.logFPS();
             if (this.isAnimating) {
@@ -110,8 +102,9 @@ class Particle {
 
     }
     draw() {
-        // if( this.effect.context.fillStyle != this.color )
-        this.effect.context.fillStyle = this.color;
+        if( this.effect.context.fillStyle != this.color ){
+            this.effect.context.fillStyle = this.color;
+        }
         this.effect.context.fillRect(this.x, this.y, this.size, this.size);
     }
     update() {
@@ -148,12 +141,14 @@ class Effect {
             radius: 15000,
             x: 0,
             y: 0
-        }
-        window.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.x;
-            this.mouse.y = e.y;
-        })
+        };
     }
+
+    updateInputPosition(x, y) {
+        this.mouse.x = x;
+        this.mouse.y = y;
+    }
+
     wrapText(text) {
         const gradient = this.context.createLinearGradient(0, 0, this.canvasWidth, this.canvasHeight);
         gradient.addColorStop(0.3, 'red');
@@ -190,6 +185,7 @@ class Effect {
         this.convertToParticles();
 
     }
+
     convertToParticles() {
         this.particles = [];
         const pixels = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight).data;
@@ -208,9 +204,8 @@ class Effect {
             }
         }
     }
-    render() {
-        // this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
+    render() {
         this.particles.forEach(particle => {
             particle.update();
             particle.draw();

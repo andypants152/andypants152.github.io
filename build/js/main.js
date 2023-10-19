@@ -17,35 +17,11 @@ class tooDeeWorld {
 
     }
 
-
-
     attachEventListeners() {
         window.addEventListener('resize', () => {
             this.screen.updateCanvasSize();
             this.screen.effect.wrapText('AndyPants!');
         });
-
-        //document.addEventListener('keydown', () => { this.changeBackgroundColor() });
-
-        // // Handle the click event to draw a square
-        // document.addEventListener('click', (event) => {
-        //     const x = event.clientX;
-        //     const y = event.clientY;
-        //     const size = Math.floor(Math.random() * (50 + 1));; // Adjust the size as needed
-        //     const color = 'green'; // Adjust the color as needed
-        //     const square = new Square(x, y, size, this.randomColor());
-        //     this.squares.push(square);
-        // });
-
-        // // Handle the touchstart event to draw a circle
-        // document.addEventListener('touchstart', (event) => {
-        //     const x = event.touches[0].clientX;
-        //     const y = event.touches[0].clientY;
-        //     const color = 'green';
-        //     const size = 50; // Adjust the size as needed
-        //     const circle = new Circle(x, y, size, this.randomColor());
-        //     this.circles.push(circle);
-        // });
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
@@ -63,6 +39,26 @@ class tooDeeWorld {
             }
         });
 
+        window.addEventListener('mousemove', (e) => {
+            // Call the updateMousePosition method to update the mouse position in the Effect class
+            this.screen.effect.updateInputPosition(e.x, e.y);
+        });
+
+        document.addEventListener('touchstart', (event) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            this.screen.effect.updateTouchPosition(touch.clientX, touch.clientY);
+                });
+
+        document.addEventListener('touchmove', (event) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            this.screen.effect.updateTouchPosition(touch.clientX, touch.clientY);
+                });
+
+        document.addEventListener('touchend', (event) => {
+            // Handle touchend event
+        });
     }
 }
 
