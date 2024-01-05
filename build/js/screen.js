@@ -16,7 +16,7 @@ export default class Screen {
         this.createCanvas();
         this.updateCanvasSize();
         this.effect = new Effect(this.ctx, this.canvas.width, this.canvas.height);
-        this.effect.wrapText('AndyPants!');
+        this.effect.wrapText('NASA SAT NOON!');
         this.animate();
     }
 
