@@ -154,7 +154,7 @@ class Effect {
         this.lineHeight = this.fontSize * 0.8;
         this.maxTextWidth = this.canvasWidth * 0.8;
         this.text = 'AndyPants';
-        this.gradientColors = ['#ff004d', '#ff00ff', '#0077ff'];
+        this.gradientColors = ['#ff0000', '#ff00ff', '#0000ff'];
 
         this.particles = [];
         this.gap = 5;
