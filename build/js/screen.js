@@ -17,7 +17,7 @@ export default class Screen {
         this.createCanvas();
         this.updateCanvasSize();
         this.effect = new Effect(this.ctx, this.canvas.width, this.canvas.height);
-        this.effect.wrapText('AndyPants');
+        this.effect.wrapText();
         this.animate();
     }
 
@@ -43,6 +43,7 @@ export default class Screen {
             this.effect.updateResponsiveMetrics();
             this.effect.textX = this.canvas.width / 2;
             this.effect.textY = this.canvas.height / 2;
+            this.effect.wrapText();
         }
     }
 
@@ -152,6 +153,8 @@ class Effect {
         this.fontSize = 150;
         this.lineHeight = this.fontSize * 0.8;
         this.maxTextWidth = this.canvasWidth * 0.8;
+        this.text = 'AndyPants';
+        this.gradientColors = ['#ff004d', '#ff00ff', '#0077ff'];
 
         this.particles = [];
         this.gap = 5;
@@ -184,11 +187,38 @@ class Effect {
         this.mouse.radius = isActive ? this.baseMouseRadius : 0;
     }
 
-    wrapText(text) {
+    setText(text) {
+        const nextText = text?.trim() || this.text || 'AndyPants';
+        this.wrapText(nextText);
+    }
+
+    setGradientColors(colors = []) {
+        const sanitized = colors
+            .map(color => color?.trim())
+            .filter(color => typeof color === 'string' && color.length > 0);
+
+        if (!sanitized.length) {
+            return;
+        }
+
+        this.gradientColors = sanitized;
+        this.wrapText();
+    }
+
+    getGradientColors() {
+        return [...this.gradientColors];
+    }
+
+    wrapText(text = this.text) {
+        const safeText = text?.trim() || this.text || 'AndyPants';
+        this.text = safeText;
+        const gradientColors = this.gradientColors.length ? this.gradientColors : ['#ff004d', '#ff00ff', '#0077ff'];
         const gradient = this.context.createLinearGradient(0, 0, this.canvasWidth, this.canvasHeight);
-        gradient.addColorStop(0.3, 'red');
-        gradient.addColorStop(0.5, 'fuchsia');
-        gradient.addColorStop(0.7, 'blue');
+        const stopCount = gradientColors.length;
+        gradientColors.forEach((color, index) => {
+            const position = stopCount === 1 ? 0.5 : index / (stopCount - 1);
+            gradient.addColorStop(position, color);
+        });
         this.context.fillStyle = gradient;
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
@@ -196,7 +226,7 @@ class Effect {
         this.context.strokeStyle = 'white';
         this.context.font = this.fontSize + 'px Helvetica';
         let linesArray = [];
-        let words = text.split(' ');
+        let words = this.text.split(' ');
         let lineCounter = 0;
         let line = '';
         for (let i = 0; i < words.length; i++) {

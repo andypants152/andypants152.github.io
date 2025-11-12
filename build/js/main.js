@@ -36,9 +36,11 @@ class tooDeeWorld {
     }
 
     attachEventListeners() {
+        const canvas = this.screen.canvas;
+        if (!canvas) return;
+
         window.addEventListener('resize', () => {
             this.screen.updateCanvasSize();
-            this.screen.effect.wrapText('AndyPants!');
         });
 
         document.addEventListener('keydown', (event) => {
@@ -57,7 +59,7 @@ class tooDeeWorld {
             }
         });
 
-        window.addEventListener('mousemove', (event) => {
+        canvas.addEventListener('mousemove', (event) => {
             this.screen.effect.setInteractivity(true);
             this.updateInputPositionFromEvent(event);
         });
@@ -87,16 +89,70 @@ class tooDeeWorld {
             this.updateInputPositionFromEvent(event);
         };
 
-        window.addEventListener('touchstart', (event) => {
+        canvas.addEventListener('touchstart', (event) => {
             handleDoubleTap(event);
             handleTouch(event);
         }, { passive: false });
-        window.addEventListener('touchmove', handleTouch, { passive: false });
-        window.addEventListener('touchend', (event) => {
+        canvas.addEventListener('touchmove', handleTouch, { passive: false });
+        canvas.addEventListener('touchend', (event) => {
             event.preventDefault();
             this.screen.effect.setInteractivity(false);
         }, { passive: false });
+        canvas.addEventListener('touchcancel', (event) => {
+            event.preventDefault();
+            this.screen.effect.setInteractivity(false);
+        }, { passive: false });
+        canvas.addEventListener('mouseleave', () => {
+            this.screen.effect.setInteractivity(false);
+        });
+    }
+
+    initializeUIControls() {
+        const fab = document.getElementById('editFab');
+        const dialog = document.getElementById('editDialog');
+        const form = document.getElementById('editDialogForm');
+        const cancelButton = document.getElementById('cancelEditButton');
+        const textField = document.getElementById('displayTextField');
+        const gradientInputs = Array.from(document.querySelectorAll('[data-gradient-input]'));
+
+        if (!fab || !dialog || !form || !textField) {
+            return;
+        }
+
+        const populateForm = () => {
+            textField.value = this.screen.effect.text;
+            const currentColors = this.screen.effect.getGradientColors();
+            gradientInputs.forEach((input, index) => {
+                input.value = currentColors[index] || currentColors[currentColors.length - 1] || '#ffffff';
+            });
+        };
+
+        fab.addEventListener('click', () => {
+            populateForm();
+            dialog.open = true;
+        });
+
+        cancelButton?.addEventListener('click', (event) => {
+            event.preventDefault();
+            dialog.open = false;
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const newText = textField.value.trim();
+            const colors = gradientInputs.map(input => input.value).filter(Boolean);
+            if (newText.length) {
+                this.screen.effect.setText(newText);
+            }
+            if (colors.length) {
+                this.screen.effect.setGradientColors(colors);
+            }
+            dialog.open = false;
+        });
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => { new tooDeeWorld(); });
+document.addEventListener('DOMContentLoaded', () => {
+    const app = new tooDeeWorld();
+    app.initializeUIControls();
+});
