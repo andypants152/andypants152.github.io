@@ -4,8 +4,8 @@
   "description": "Dottz",
   "main": "main.js",
   "scripts": {
-    "dev": "parcel ./build/index.html --host 0.0.0.0",
-    "build": "parcel build ./build/index.html"
+    "dev": "parcel ./build/index.html ./build/sw.js --host 0.0.0.0",
+    "build": "parcel build ./build/index.html ./build/sw.js"
   },
   "homepage": "andypants.xyz",
   "author": "AndyPants",
