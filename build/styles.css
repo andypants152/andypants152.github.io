@@ -1,3 +1,7 @@
+:root {
+    --bg-color: #000;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -19,6 +23,11 @@ canvas {
     right: 24px;
     bottom: 24px;
     z-index: 10;
+    pointer-events: none;
+}
+
+.fab-container md-fab {
+    pointer-events: auto;
 }
 
 md-dialog form {
@@ -49,3 +58,5 @@ md-dialog form {
     background: transparent;
     cursor: pointer;
 }
+
+/* dialog uses default Material theming */

@@ -114,8 +114,9 @@ class tooDeeWorld {
         const cancelButton = document.getElementById('cancelEditButton');
         const textField = document.getElementById('displayTextField');
         const gradientInputs = Array.from(document.querySelectorAll('[data-gradient-input]'));
+        const backgroundInput = document.getElementById('backgroundColorInput');
 
-        if (!fab || !dialog || !form || !textField) {
+        if (!fab || !dialog || !form || !textField || !backgroundInput) {
             return;
         }
 
@@ -125,6 +126,7 @@ class tooDeeWorld {
             gradientInputs.forEach((input, index) => {
                 input.value = currentColors[index] || currentColors[currentColors.length - 1] || '#ffffff';
             });
+            backgroundInput.value = this.screen.color;
         };
 
         fab.addEventListener('click', () => {
@@ -146,6 +148,9 @@ class tooDeeWorld {
             }
             if (colors.length) {
                 this.screen.effect.setGradientColors(colors);
+            }
+            if (backgroundInput.value) {
+                this.screen.changeBackgroundColor(backgroundInput.value);
             }
             dialog.open = false;
         });
