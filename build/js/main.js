@@ -6,6 +6,11 @@ class tooDeeWorld {
     constructor() {
         this.screen = new Screen(config.bgColor);
         this.screen.initialize();
+        this.lastTouchTime = 0;
+        this.lastTouchX = 0;
+        this.lastTouchY = 0;
+        this.doubleTapThreshold = 300;
+        this.doubleTapMoveTolerance = 30;
         this.run();
         this.attachEventListeners();
 
@@ -57,13 +62,35 @@ class tooDeeWorld {
             this.updateInputPositionFromEvent(event);
         });
 
+        const handleDoubleTap = (event) => {
+            if (!event.touches || event.touches.length !== 1) return;
+            const touch = event.touches[0];
+            const now = Date.now();
+            const deltaTime = now - this.lastTouchTime;
+            const dx = touch.clientX - this.lastTouchX;
+            const dy = touch.clientY - this.lastTouchY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (deltaTime <= this.doubleTapThreshold && distance <= this.doubleTapMoveTolerance) {
+                this.screen.changeBackgroundColor();
+                this.lastTouchTime = 0;
+            } else {
+                this.lastTouchTime = now;
+                this.lastTouchX = touch.clientX;
+                this.lastTouchY = touch.clientY;
+            }
+        };
+
         const handleTouch = (event) => {
             event.preventDefault();
             this.screen.effect.setInteractivity(true);
             this.updateInputPositionFromEvent(event);
         };
 
-        window.addEventListener('touchstart', handleTouch, { passive: false });
+        window.addEventListener('touchstart', (event) => {
+            handleDoubleTap(event);
+            handleTouch(event);
+        }, { passive: false });
         window.addEventListener('touchmove', handleTouch, { passive: false });
         window.addEventListener('touchend', (event) => {
             event.preventDefault();
