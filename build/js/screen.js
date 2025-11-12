@@ -16,7 +16,7 @@ export default class Screen {
         this.createCanvas();
         this.updateCanvasSize();
         this.effect = new Effect(this.ctx, this.canvas.width, this.canvas.height);
-        this.effect.wrapText('NASA SAT NOON!');
+        this.effect.wrapText('AndyPants');
         this.animate();
     }
 
@@ -29,11 +29,17 @@ export default class Screen {
     }
 
     updateCanvasSize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        const width = window.innerWidth || document.documentElement.clientWidth;
+        const height = window.innerHeight || document.documentElement.clientHeight;
+
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.canvas.style.width = `${width}px`;
+        this.canvas.style.height = `${height}px`;
         if (this.effect) {
             this.effect.canvasWidth = this.canvas.width;
             this.effect.canvasHeight = this.canvas.height;
+            this.effect.updateResponsiveMetrics();
             this.effect.textX = this.canvas.width / 2;
             this.effect.textY = this.canvas.height / 2;
         }
@@ -119,7 +125,7 @@ class Particle {
             this.vy += this.force * Math.sin(this.angle);
         }
         this.x += (this.vx *= this.friction) + (this.originX - this.x) * this.ease;
-        this.y += (this.vx *= this.friction) + (this.originY - this.y) * this.ease;
+        this.y += (this.vy *= this.friction) + (this.originY - this.y) * this.ease;
 
     }
 }
@@ -137,16 +143,33 @@ class Effect {
 
         this.particles = [];
         this.gap = 5;
+        this.baseMouseRadius = 15000;
         this.mouse = {
-            radius: 15000,
+            radius: this.baseMouseRadius,
             x: 0,
             y: 0
         };
+
+        this.updateResponsiveMetrics();
+    }
+
+    updateResponsiveMetrics() {
+        const shortestSide = Math.min(this.canvasWidth, this.canvasHeight);
+        const dynamicFontSize = shortestSide * 0.18;
+        this.fontSize = Math.max(36, Math.min(200, dynamicFontSize));
+        this.lineHeight = this.fontSize * 0.8;
+        this.maxTextWidth = this.canvasWidth * 0.85;
+        const dynamicGap = Math.round(shortestSide / 200);
+        this.gap = Math.max(2, Math.min(8, dynamicGap || 2));
     }
 
     updateInputPosition(x, y) {
         this.mouse.x = x;
         this.mouse.y = y;
+    }
+
+    setInteractivity(isActive) {
+        this.mouse.radius = isActive ? this.baseMouseRadius : 0;
     }
 
     wrapText(text) {

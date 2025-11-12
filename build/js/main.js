@@ -11,6 +11,19 @@ class tooDeeWorld {
 
     }
 
+    updateInputPositionFromEvent = (event) => {
+        const point = event.touches && event.touches.length
+            ? event.touches[0]
+            : event;
+
+        const x = point?.clientX ?? point?.x;
+        const y = point?.clientY ?? point?.y;
+
+        if (typeof x === 'number' && typeof y === 'number') {
+            this.screen.effect.updateInputPosition(x, y);
+        }
+    }
+
     //run = async () => { //i feel like this is going to be right but isn't for now
     run = () => {
         //i don't know anymore...
@@ -39,26 +52,23 @@ class tooDeeWorld {
             }
         });
 
-        window.addEventListener('mousemove', (e) => {
-            // Call the updateMousePosition method to update the mouse position in the Effect class
-            this.screen.effect.updateInputPosition(e.x, e.y);
+        window.addEventListener('mousemove', (event) => {
+            this.screen.effect.setInteractivity(true);
+            this.updateInputPositionFromEvent(event);
         });
 
-        document.addEventListener('touchstart', (event) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            this.screen.effect.updateTouchPosition(touch.clientX, touch.clientY);
-                });
+        const handleTouch = (event) => {
+            event.preventDefault();
+            this.screen.effect.setInteractivity(true);
+            this.updateInputPositionFromEvent(event);
+        };
 
-        document.addEventListener('touchmove', (event) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            this.screen.effect.updateTouchPosition(touch.clientX, touch.clientY);
-                });
-
-        document.addEventListener('touchend', (event) => {
-            // Handle touchend event
-        });
+        window.addEventListener('touchstart', handleTouch, { passive: false });
+        window.addEventListener('touchmove', handleTouch, { passive: false });
+        window.addEventListener('touchend', (event) => {
+            event.preventDefault();
+            this.screen.effect.setInteractivity(false);
+        }, { passive: false });
     }
 }
 
