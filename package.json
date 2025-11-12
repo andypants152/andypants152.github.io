@@ -5,14 +5,12 @@
   "main": "main.js",
   "scripts": {
     "dev": "parcel ./build/index.html --host 0.0.0.0",
-    "build": "parcel build ./build/index.html",
-    "deploy": "rm -rf dist/ && npm run build && gh-pages -d dist --cname andypants.xyz"
+    "build": "parcel build ./build/index.html"
   },
   "homepage": "andypants.xyz",
   "author": "AndyPants",
   "license": "CC0-1.0",
   "devDependencies": {
-    "gh-pages": "^6.0.0",
     "parcel-bundler": "^1.12.5"
   },
   "dependencies": {
