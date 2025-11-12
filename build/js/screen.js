@@ -9,6 +9,7 @@ export default class Screen {
         this.deltaTime = 0;
         this.isAnimating = true;
         this.effect = null;
+        this.updateDocumentBackground(this.color);
 
     }
 
@@ -67,10 +68,21 @@ export default class Screen {
         } else {
             this.color = this.randomColor();
         }
+        this.updateDocumentBackground(this.color);
     }
 
     randomColor() {
         return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
+    updateDocumentBackground(color) {
+        document.documentElement.style.setProperty('--bg-color', color);
+        document.body.style.backgroundColor = color;
+        document.documentElement.style.backgroundColor = color;
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', color);
+        }
     }
 
     logFPS() {
