@@ -11,6 +11,11 @@ export default defineConfig({
         main: resolve(__dirname, 'build/index.html'),
         sw: resolve(__dirname, 'build/sw.js'),
       },
+      output: {
+        entryFileNames: (chunk) => (chunk.name === 'sw' ? 'sw.js' : 'assets/[name]-[hash].js'),
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+      },
     },
   },
 });
