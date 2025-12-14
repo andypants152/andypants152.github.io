@@ -1,16 +1,17 @@
-const CACHE_NAME = 'dottz-cache-v1';
+const CACHE_NAME = 'dottz-cache-v2';
 const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './styles.css',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  '/',
+  '/index.html',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)).then(() => self.skipWaiting())
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => Promise.all(PRECACHE_URLS.map((url) => cache.add(url).catch(() => null))))
+      .then(() => self.skipWaiting())
   );
 });
 
