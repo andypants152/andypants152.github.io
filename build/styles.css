@@ -30,6 +30,15 @@ canvas {
     pointer-events: auto;
 }
 
+.fab-container--left {
+    left: 24px;
+    right: auto;
+}
+
+.fab-link {
+    text-decoration: none;
+}
+
 md-dialog form {
     display: flex;
     flex-direction: column;
