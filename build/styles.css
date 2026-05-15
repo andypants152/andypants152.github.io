@@ -43,6 +43,7 @@ md-dialog form {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-width: min(92vw, 540px);
 }
 
 .color-input-row {
@@ -68,4 +69,26 @@ md-dialog form {
     cursor: pointer;
 }
 
-/* dialog uses default Material theming */
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px 14px;
+}
+
+.control-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.control-field select,
+.control-field input[type="range"] {
+    width: 100%;
+}
+
+.control-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    color: #222;
+}

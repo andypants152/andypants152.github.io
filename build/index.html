@@ -42,6 +42,14 @@
         <div slot="headline">Customize Display</div>
         <form id="editDialogForm" slot="content">
             <md-outlined-text-field id="displayTextField" label="Display text" maxlength="40"></md-outlined-text-field>
+            <label class="control-field">Mode
+                <select id="modeSelect">
+                    <option value="neon">Neon</option>
+                    <option value="vortex">Vortex</option>
+                    <option value="glitch">Glitch</option>
+                    <option value="pulse">Pulse</option>
+                </select>
+            </label>
             <div class="color-input-row">
                 <label class="color-field">Left
                     <input type="color" value="#ff0000" data-gradient-input />
@@ -54,6 +62,28 @@
                 </label>
                 <label class="color-field">Background
                     <input type="color" value="#000000" id="backgroundColorInput" />
+                </label>
+            </div>
+            <div class="control-grid">
+                <label class="control-field">Particle Size
+                    <input type="range" id="particleGapInput" min="2" max="12" step="1" />
+                    <span class="control-value" data-value-for="particleGapInput"></span>
+                </label>
+                <label class="control-field">Force Radius
+                    <input type="range" id="mouseRadiusInput" min="1000" max="60000" step="500" />
+                    <span class="control-value" data-value-for="mouseRadiusInput"></span>
+                </label>
+                <label class="control-field">Friction
+                    <input type="range" id="frictionInput" min="0.05" max="0.95" step="0.01" />
+                    <span class="control-value" data-value-for="frictionInput"></span>
+                </label>
+                <label class="control-field">Trail
+                    <input type="range" id="trailInput" min="0.05" max="1" step="0.01" />
+                    <span class="control-value" data-value-for="trailInput"></span>
+                </label>
+                <label class="control-field">Gradient Speed
+                    <input type="range" id="gradientSpeedInput" min="0" max="0.06" step="0.001" />
+                    <span class="control-value" data-value-for="gradientSpeedInput"></span>
                 </label>
             </div>
         </form>

@@ -11,7 +11,6 @@ class tooDeeWorld {
         this.lastTouchY = 0;
         this.doubleTapThreshold = 300;
         this.doubleTapMoveTolerance = 30;
-        this.run();
         this.attachEventListeners();
 
     }
@@ -29,12 +28,6 @@ class tooDeeWorld {
         }
     }
 
-    //run = async () => { //i feel like this is going to be right but isn't for now
-    run = () => {
-        //i don't know anymore...
-
-    }
-
     attachEventListeners() {
         const canvas = this.screen.canvas;
         if (!canvas) return;
@@ -44,16 +37,25 @@ class tooDeeWorld {
         });
 
         document.addEventListener('keydown', (event) => {
+            if (event.key === ' ') {
+                event.preventDefault();
+            }
             switch (event.key) {
                 case ' ':
-                    console.log("toggle?")
-                    this.screen.isAnimating = !this.screen.isAnimating; // Toggle animation state
+                    this.screen.isAnimating = !this.screen.isAnimating;
                     if (this.screen.isAnimating) {
-                        this.screen.animate(); // Resume animation
+                        this.screen.animate();
                     }
                     break;
-                default:
+                case 'm':
+                case 'M':
+                    this.screen.effect.cycleMode();
+                    break;
+                case 'c':
+                case 'C':
                     this.screen.changeBackgroundColor();
+                    break;
+                default:
                     break;
 
             }
@@ -115,10 +117,42 @@ class tooDeeWorld {
         const textField = document.getElementById('displayTextField');
         const gradientInputs = Array.from(document.querySelectorAll('[data-gradient-input]'));
         const backgroundInput = document.getElementById('backgroundColorInput');
+        const modeSelect = document.getElementById('modeSelect');
+        const particleGapInput = document.getElementById('particleGapInput');
+        const mouseRadiusInput = document.getElementById('mouseRadiusInput');
+        const frictionInput = document.getElementById('frictionInput');
+        const trailInput = document.getElementById('trailInput');
+        const gradientSpeedInput = document.getElementById('gradientSpeedInput');
+        const valueOutputs = Array.from(document.querySelectorAll('[data-value-for]'));
 
-        if (!fab || !dialog || !form || !textField || !backgroundInput) {
+        if (
+            !fab || !dialog || !form || !textField || !backgroundInput || !modeSelect ||
+            !particleGapInput || !mouseRadiusInput || !frictionInput || !trailInput || !gradientSpeedInput
+        ) {
             return;
         }
+
+        const updateValueOutput = (id, value) => {
+            const output = valueOutputs.find((element) => element.getAttribute('data-value-for') === id);
+            if (output) {
+                output.textContent = value;
+            }
+        };
+
+        const applyTuning = () => {
+            this.screen.effect.setMode(modeSelect.value);
+            this.screen.effect.setParticleGap(Number(particleGapInput.value));
+            this.screen.effect.setMouseRadius(Number(mouseRadiusInput.value));
+            this.screen.effect.setParticleFriction(Number(frictionInput.value));
+            this.screen.effect.setTrailAlpha(Number(trailInput.value));
+            this.screen.effect.setGradientSpeed(Number(gradientSpeedInput.value));
+
+            updateValueOutput('particleGapInput', particleGapInput.value);
+            updateValueOutput('mouseRadiusInput', mouseRadiusInput.value);
+            updateValueOutput('frictionInput', Number(frictionInput.value).toFixed(2));
+            updateValueOutput('trailInput', Number(trailInput.value).toFixed(2));
+            updateValueOutput('gradientSpeedInput', Number(gradientSpeedInput.value).toFixed(3));
+        };
 
         const populateForm = () => {
             textField.value = this.screen.effect.text;
@@ -127,6 +161,14 @@ class tooDeeWorld {
                 input.value = currentColors[index] || currentColors[currentColors.length - 1] || '#ffffff';
             });
             backgroundInput.value = this.screen.color;
+            const tuning = this.screen.effect.getTuning();
+            modeSelect.value = tuning.mode;
+            particleGapInput.value = String(tuning.gap);
+            mouseRadiusInput.value = String(tuning.baseMouseRadius);
+            frictionInput.value = tuning.friction.toFixed(2);
+            trailInput.value = tuning.trailAlpha.toFixed(2);
+            gradientSpeedInput.value = tuning.gradientSpeed.toFixed(3);
+            applyTuning();
         };
 
         fab.addEventListener('click', () => {
@@ -137,6 +179,18 @@ class tooDeeWorld {
         cancelButton?.addEventListener('click', (event) => {
             event.preventDefault();
             dialog.open = false;
+        });
+
+        [
+            modeSelect,
+            particleGapInput,
+            mouseRadiusInput,
+            frictionInput,
+            trailInput,
+            gradientSpeedInput
+        ].forEach((element) => {
+            element.addEventListener('input', applyTuning);
+            element.addEventListener('change', applyTuning);
         });
 
         form.addEventListener('submit', (event) => {
@@ -152,6 +206,7 @@ class tooDeeWorld {
             if (backgroundInput.value) {
                 this.screen.changeBackgroundColor(backgroundInput.value);
             }
+            applyTuning();
             dialog.open = false;
         });
     }
